@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+
+  edge-proxy:
+    image: nginx:1.19.1
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - edge
+    ports:
+        - 80:80
+
+  localhost1_1:
+    image: marcoslima/route-troubleshooting-api
+    hostname: instancia01
+    environment:
+      - APP_NAME=localhost1_INSTANCIA_1
+    networks:
+      - edge
+
+  localhost1_2:
+    image: marcoslima/route-troubleshooting-api
+    hostname: instancia02
+    environment:
+      - APP_NAME=localhost1_INSTANCIA_2
+    networks:
+      - edge
+
+  localhost2:
+    image: marcoslima/route-troubleshooting-api
+    environment:
+    - APP_NAME=localhost2
+    networks:
+      - edge
+
+networks:
+  edge:
+    driver: bridge
